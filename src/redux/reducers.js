@@ -14,8 +14,8 @@ const appReducer = (state = initialState, action) => {
       // return Object.assign({}, state, { employees }, { isLoaded }); 
       return {
         ...state,
-        employees
-        // isLoaded: true
+        employees,
+        isLoaded: true
       }
     }
     case EMPLOYEE_ADDED: {
