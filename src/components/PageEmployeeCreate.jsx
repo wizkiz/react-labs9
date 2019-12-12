@@ -1,5 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+//import { addEmployee } from '../redux/actions'
 
 class PageEmployeeCreate extends React.Component {
   constructor(props) {
@@ -39,44 +41,46 @@ class PageEmployeeCreate extends React.Component {
 
   createEmployee() {
     this.setState({ isSaving: true, error: null });
-    
-    const { 
+
+    const {
       name,
-      age, 
-      company, 
+      age,
+      company,
       email,
     } = this.state;
 
-    const employee = { 
+    const employee = {
       id: Date.now(),
-      name, 
-      age, 
-      company, 
-      email };
+      name,
+      age,
+      company,
+      email
+    };
 
     fetch('http://localhost:3004/employees', {
-      method: 'POST', 
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       body: JSON.stringify(employee)
     })
-    .then(res => {
-      if(res.status !== 201) {
-        this.setState({ isSaving: false, error: `Saving returned status ${res.status}`})
-      } else {
-        this.props.history.push("/");
-      }
-    })  
+      .then(res => {
+        if (res.status !== 201) {
+          this.setState({ isSaving: false, error: `Saving returned status ${res.status}` })
+        } else {
+          this.props.history.push("/");
+        }
+      });
+      //.then(this.props.addEmployee(employee));
   }
 
   render() {
-    const { 
-      name, 
-      age, 
-      company, 
-      email, 
+    const {
+      name,
+      age,
+      company,
+      email,
       isSaving,
       error,
     } = this.state;
@@ -85,9 +89,9 @@ class PageEmployeeCreate extends React.Component {
       <div>
         <h1>Enter employees data:</h1>
         <div>Name: <input type="text" value={name} onChange={this.nameChanged} disabled={isSaving} /></div>
-        <div>Age: <input type="number" value={age} onChange={this.ageChanged} disabled={isSaving}/></div>
-        <div>Company: <input type="text" value={company} onChange={this.companyChanged} disabled={isSaving}/></div>
-        <div>Email: <input type="email" value={email} onChange={this.emailChanged} disabled={isSaving}/></div>
+        <div>Age: <input type="number" value={age} onChange={this.ageChanged} disabled={isSaving} /></div>
+        <div>Company: <input type="text" value={company} onChange={this.companyChanged} disabled={isSaving} /></div>
+        <div>Email: <input type="email" value={email} onChange={this.emailChanged} disabled={isSaving} /></div>
         {!isSaving ? <button onClick={this.createEmployee}>Create employee</button> : <p>Saving ...</p>}
         {error && <p>An error occured: {error}</p>}
       </div>
@@ -95,4 +99,14 @@ class PageEmployeeCreate extends React.Component {
   }
 }
 
-export default withRouter(PageEmployeeCreate);
+const mapStateToProps = (state /*, ownProps*/) => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  // addEmployee: employee => dispatch(addEmployee(employee))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PageEmployeeCreate));

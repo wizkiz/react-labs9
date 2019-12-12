@@ -11,32 +11,36 @@ class PageEmployeesList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       isLoading: false,
     }
   }
 
   componentDidMount() {
+    // if(this.props.isLoaded) {
+    //   return;
+    // }
     this.setState({ isLoading: true });
     fetch('http://localhost:3004/employees')
-    .then((data) => data.json())
-    // Without Redux
-    // .then((employees) => this.setState({ employees, isLoading: false }));
-    // With Redux
-    .then((employees) => {
-      this.props.employeesLoaded(employees);
-      this.setState({ isLoading: false });
-    });
+      .then((data) => data.json())
+      // Without Redux
+      // .then((employees) => this.setState({ employees, isLoading: false }));
+      // With Redux
+      .then((employees) => {
+        this.props.employeesLoaded(employees);
+        this.setState({ isLoading: false });
+      })
+      .then(console.log("XD"));
   }
 
   render() {
     const { isLoading } = this.state;
     const { employees } = this.props;
 
-    if(isLoading) {
+    if (isLoading) {
       return <p>Loading ...</p>
     }
-    
+
     return (
       <div>
         <h1>Employees List:</h1>
@@ -51,7 +55,8 @@ class PageEmployeesList extends React.Component {
 
 const mapStateToProps = (state /*, ownProps*/) => {
   return {
-    employees: state.employees
+    employees: state.employees,
+    //isLoaded: state.isLoaded
   }
 }
 
@@ -59,7 +64,4 @@ const mapDispatchToProps = (dispatch) => ({
   employeesLoaded: employees => dispatch(employeesLoaded(employees))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageEmployeesList)
+export default connect(mapStateToProps, mapDispatchToProps)(PageEmployeesList)
