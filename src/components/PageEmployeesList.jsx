@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { loadEmployees } from '../redux/thunk'
 //import { employeesLoaded } from '../redux/actions'
@@ -9,6 +9,11 @@ const EmployeeLine = ({ employee }) => <div>{employee.name} ({employee.age} yrs 
 class PageEmployeesList extends React.Component {
 
   componentDidMount() {
+    if (this.props.user === undefined) {
+      alert("You are not logged in");
+      this.props.history.push("/");
+      return;
+    }
     if (this.props.isLoaded) {
       return;
     }
@@ -24,11 +29,15 @@ class PageEmployeesList extends React.Component {
 
     return (
       <div>
+        {this.props.user !== undefined && <h4 style={{ float: "right" }}>User: {this.props.user.full_name}</h4>}
         <h1>Employees List:</h1>
-        {employees && employees.map((employee => <EmployeeLine key={employee._id} employee={employee} />))}
+        {this.props.user !== undefined ? (employees && employees.map((employee => <EmployeeLine key={employee._id} employee={employee} />))) : <p>Forbidden</p>}
         <Link to="/new">
           <button>Create employee</button>
         </Link>
+        {/* <Link to="/">
+          <button>XD</button> 
+        </Link> */}
       </div>
     );
   }
@@ -38,7 +47,8 @@ const mapStateToProps = (state /*, ownProps*/) => {
   return {
     employees: state.employees,
     isLoaded: state.isLoaded,
-    isLoading: state.isLoading
+    isLoading: state.isLoading,
+    user: state.user
   }
 }
 
@@ -47,4 +57,4 @@ const mapDispatchToProps = (dispatch) => ({
   loadEmployees: () => dispatch(loadEmployees())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageEmployeesList)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PageEmployeesList))

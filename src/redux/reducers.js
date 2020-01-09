@@ -1,14 +1,18 @@
-import { 
+import {
   EMPLOYEES_LOADED,
   EMPLOYEES_LOADING,
   EMPLOYEES_LOADING_ERROR,
-  EMPLOYEE_ADDED
+  EMPLOYEE_ADDED,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_ERROR
 } from './constants';
 
 export const initialState = {
   employees: [],
   error: null,
-  isLoading: true
+  isLoading: true,
+  errorLogin: null,
+  user: null
 };
 
 // Read this: https://redux.js.org/basics/reducers
@@ -33,7 +37,7 @@ const appReducer = (state = initialState, action) => {
       }
     }
     case EMPLOYEES_LOADING_ERROR: {
-      const {error} = action.payload;
+      const { error } = action.payload;
       return {
         ...state,
         error,
@@ -47,8 +51,22 @@ const appReducer = (state = initialState, action) => {
         employees: [...state.employees, employee]
       }
     }
+    case USER_LOGIN_SUCCESS: {
+      const { user } = action.payload;
+      return {
+        ...state,
+        errorLogin: null,
+        user
+      }
+    }
+    case USER_LOGIN_ERROR: {
+      return {
+        ...state,
+        errorLogin: "Invalid user"
+      }
+    }
     default:
-        return state
+      return state
   }
 }
 

@@ -2,7 +2,9 @@ import {
   employeesLoaded,
   employeesLoading,
   employeesLoadingErorr,
-  addEmployee
+  addEmployee,
+  userLoginSuccess,
+  userLoginError
 } from './actions'
 
 export const loadEmployees = () => {
@@ -22,5 +24,24 @@ export const loadEmployees = () => {
             dispatch(employeesLoadingErorr(error))
           }
         ))
+  }
+}
+
+export const userLogin = (username) => {
+  return (dispatch) => {
+    return (
+      fetch('http://localhost:3004/users')
+        .then((data) => data.json())
+        .then(
+          (users) => {
+            const user = users.find(us => us.username === username);
+            if (user !== undefined) {
+              dispatch(userLoginSuccess(user));
+            } else {
+              dispatch(userLoginError());
+            }
+          }
+        )
+    )
   }
 }
