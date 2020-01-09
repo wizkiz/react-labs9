@@ -10,7 +10,6 @@ import { createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import rootReducer from '../redux/reducers'
 
-
 import PageEmployeesList from './PageEmployeesList';
 import PageEmployeeCreate from './PageEmployeeCreate';
 
@@ -20,12 +19,8 @@ const App = () => (
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route exact path="/">
-          <PageEmployeesList></PageEmployeesList>
-        </Route>
-        <Route exact path="/new">
-          <PageEmployeeCreate></PageEmployeeCreate>
-        </Route>
+        <Route exact path="/" component={PageEmployeesList}/>
+        <Route exact path="/new" component={PageEmployeeCreate}/>
       </Switch>
     </Router>
   </Provider>
