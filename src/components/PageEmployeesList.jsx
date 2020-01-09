@@ -1,41 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-
-import { employeesLoaded } from '../redux/actions'
+import { loadEmployees } from '../redux/thunk'
+//import { employeesLoaded } from '../redux/actions'
 
 const EmployeeLine = ({ employee }) => <div>{employee.name} ({employee.age} yrs old): {employee.company}</div>
 
 class PageEmployeesList extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: false,
-    }
-  }
-
   componentDidMount() {
-    if(this.props.isLoaded) {
+    if (this.props.isLoaded) {
       return;
     }
-    this.setState({ isLoading: true });
-    fetch('http://localhost:3004/employees')
-      .then((data) => data.json())
-      // Without Redux
-      // .then((employees) => this.setState({ employees, isLoading: false }));
-      // With Redux
-      .then((employees) => {
-        this.props.employeesLoaded(employees);
-        this.setState({ isLoading: false });
-      })
-      .then(console.log("XD"));
+    this.props.loadEmployees();
   }
 
   render() {
-    const { isLoading } = this.state;
-    const { employees } = this.props;
+    const { employees, isLoading } = this.props;
 
     if (isLoading) {
       return <p>Loading ...</p>
@@ -56,12 +37,14 @@ class PageEmployeesList extends React.Component {
 const mapStateToProps = (state /*, ownProps*/) => {
   return {
     employees: state.employees,
-    isLoaded: state.isLoaded
+    isLoaded: state.isLoaded,
+    isLoading: state.isLoading
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  employeesLoaded: employees => dispatch(employeesLoaded(employees))
+  //employeesLoaded: employees => dispatch(employeesLoaded(employees)),
+  loadEmployees: () => dispatch(loadEmployees())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageEmployeesList)

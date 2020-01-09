@@ -14,11 +14,13 @@ export const loadEmployees = () => {
         // Without Redux
         // .then((employees) => this.setState({ employees, isLoading: false }));
         // With Redux
-        .then((employees, error) => {
-          if (employees)
-            dispatch(employeesLoaded(employees));
-          if (error)
+        .then(
+          (employees) => {
+            dispatch(employeesLoaded(employees))
+          },
+          (error) => {
             dispatch(employeesLoadingErorr(error))
-        }))
+          }
+        ))
   }
 }

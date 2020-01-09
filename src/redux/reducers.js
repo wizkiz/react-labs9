@@ -29,11 +29,11 @@ const appReducer = (state = initialState, action) => {
     case EMPLOYEES_LOADING: {
       return {
         ...state,
-        loading: true
+        isLoading: true
       }
     }
     case EMPLOYEES_LOADING_ERROR: {
-      const error = action.payload;
+      const {error} = action.payload;
       return {
         ...state,
         error,
