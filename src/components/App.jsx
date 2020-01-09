@@ -13,6 +13,7 @@ import rootReducer from '../redux/reducers'
 
 import PageEmployeesList from './PageEmployeesList';
 import PageEmployeeCreate from './PageEmployeeCreate';
+import PageLogin from './PageLogin'
 
 const store = createStore(
   rootReducer,
@@ -24,7 +25,8 @@ const App = () => (
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route exact path="/" component={PageEmployeesList} />
+        <Route exact path="/" component={PageLogin} />
+        <Route exact path="/list" component={PageEmployeesList} />
         <Route exact path="/new" component={PageEmployeeCreate} />
       </Switch>
     </Router>
